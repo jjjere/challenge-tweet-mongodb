@@ -8,33 +8,42 @@ class DBTwitter {
   }
 
   async getNumberOfTweetsByLevel(params: { level: number }): Promise<number> {
-    throw new Error("Method not implemented.");
+    const tweets = await TweetCollection.find({ spam_level: params.level });
+    return tweets.length;
   }
 
   async getNumberOfTweetsByLevelRange(params: {
     minLevel?: number;
     maxLevel?: number;
   }): Promise<number> {
-    throw new Error("Method not implemented.");
+    const tweets = await TweetCollection.find({
+      spam_level: { $gte: params.minLevel, $lte: params.maxLevel },
+    });
+    return tweets.length;
   }
 
   async getTweetById(params: { id: number }): Promise<Tweet | null> {
-    throw new Error("Method not implemented.");
+    const tweet = await TweetCollection.findOne({ _id: params.id });
+    return tweet;
   }
   async getNumberOfFemaleUsers(): Promise<number> {
-    throw new Error("Method not implemented.");
+    const tweets = await TweetCollection.find({ gender: "Female" });
+    return tweets.length;
   }
 
   async getNumberOfMaleUsers(): Promise<number> {
-    throw new Error("Method not implemented.");
+    const tweets = await TweetCollection.find({ gender: "Male" });
+    return tweets.length;
   }
 
   async deleteTweet(params: { id: number }): Promise<void> {
-    throw new Error("Method not implemented.");
+    await TweetCollection.deleteOne({ _id: params.id });
+    return;
   }
 
   async addTweet(tweet: Tweet): Promise<void> {
-    throw new Error("Method not implemented.");
+    await TweetCollection.create(tweet);
+    return;
   }
 
   async updateTweet(params: {
@@ -44,7 +53,11 @@ class DBTwitter {
     tweet?: string;
     spam_level?: number;
   }) {
-    throw new Error("Method not implemented.");
+    const res = await TweetCollection.updateOne(
+      { _id: params._id },
+      { $set: params }
+    );
+    return res;
   }
 }
 

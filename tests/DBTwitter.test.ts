@@ -74,7 +74,7 @@ describe("CRUD Operations over DB Twitter", () => {
   });
 
   test("Deberia existir un tweet mas tras crear uno", async () => {
-    const tweetsBeforeDelete = (await db.getTweets()).length;
+    const tweetsBeforeAdd = (await db.getTweets()).length;
     const tweet: Tweet = {
       _id: 11,
       user_name: "joflaverty9",
@@ -83,8 +83,8 @@ describe("CRUD Operations over DB Twitter", () => {
       spam_level: 1,
     };
     await db.addTweet(tweet);
-    const tweetsAfterDelete = (await db.getTweets()).length;
-    expect(tweetsBeforeDelete).toBe(tweetsAfterDelete + 1);
+    const tweetsAfterAdd = (await db.getTweets()).length;
+    expect(tweetsBeforeAdd + 1).toBe(tweetsAfterAdd);
   });
 
   test("Deberia cambiar el nombre de usuario del primer tweet", async () => {
